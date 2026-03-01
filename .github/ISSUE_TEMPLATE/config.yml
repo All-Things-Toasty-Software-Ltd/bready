@@ -1,0 +1,11 @@
+# Issue template chooser configuration.
+# Adds a direct link to GitHub Discussions for questions/support requests so
+# contributors are guided to the right venue.
+
+blank_issues_enabled: false
+contact_links:
+  - name: Question / Support
+    url: https://github.com/All-Things-Toasty-Software-Ltd/bready/discussions
+    about: >
+      Ask a question or get help using bready or crumb.
+      Please use GitHub Issues only for confirmed bugs and feature requests.
