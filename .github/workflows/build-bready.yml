@@ -1,0 +1,77 @@
+# CI workflow — build the bready Odoo integration Discord bot.
+#
+# Triggers on every push and pull request.
+# Uses CMake with FetchContent to pull D++ and nlohmann/json; libcurl is
+# installed from the Ubuntu package repository.
+
+name: Build bready
+
+on:
+  push:
+    paths:
+      - '**'
+      - '.github/workflows/build-bready.yml'
+  pull_request:
+    paths:
+      - '**'
+      - '.github/workflows/build-bready.yml'
+
+jobs:
+  build:
+    name: Build (${{ matrix.build_type }})
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    strategy:
+      fail-fast: false
+      matrix:
+        build_type: [Debug, Release]
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Install build dependencies
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y \
+            cmake \
+            ninja-build \
+            gcc \
+            g++ \
+            libcurl4-openssl-dev \
+            libssl-dev \
+            zlib1g-dev \
+            libopus-dev
+
+      # Cache the CMake build directory so that FetchContent downloads
+      # (D++, nlohmann/json) are reused across workflow runs.
+      - name: Cache CMake build directory
+        uses: actions/cache@v4
+        with:
+          path: build
+          key: >-
+            bready-${{ matrix.build_type }}-${{ runner.os }}-
+            ${{ hashFiles('CMakeLists.txt') }}
+          restore-keys: |
+            bready-${{ matrix.build_type }}-${{ runner.os }}-
+
+      - name: Configure (CMake)
+        run: |
+          cmake -B build \
+                -G Ninja \
+                -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
+
+      - name: Build
+        run: cmake --build build --parallel
+
+      - name: Verify binary exists
+        run: test -f build/bready
+
+      - name: Upload binary artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: bready-${{ matrix.build_type }}-${{ runner.os }}
+          path: build/bready
+          if-no-files-found: error
