@@ -1,0 +1,5 @@
+# JetBrains IDE directory
+.idea/
+
+# CMake build directory
+build/
