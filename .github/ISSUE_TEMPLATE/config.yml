@@ -1,11 +1,22 @@
 # Issue template chooser configuration.
 # Adds a direct link to GitHub Discussions for questions/support requests so
 # contributors are guided to the right venue.
+#
+# Templates available:
+#   bug_report.md – generic bug report (either bot)
+#   bready_bug.md – bug specific to the bready Odoo integration bot
+#   feature_request.md – generic feature request (either bot)
+#   bready_feature.md – feature request for bready
+#   documentation.md – documentation improvement
 
 blank_issues_enabled: false
 contact_links:
   - name: Question / Support
     url: https://github.com/All-Things-Toasty-Software-Ltd/bready/discussions
     about: >
-      Ask a question or get help using bready or crumb.
+      Ask a question or get help using bready.
       Please use GitHub Issues only for confirmed bugs and feature requests.
+  - name: Project Roadmap
+    url: https://github.com/All-Things-Toasty-Software-Ltd/bready/blob/main/ROADMAP.md
+    about: >
+      See what has been completed and what is planned next.
