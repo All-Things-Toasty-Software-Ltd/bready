@@ -1,6 +1,4 @@
-int main() {
-    return 0;
-}// Copyright 2026 All Things Toasty Software Ltd
+// Copyright 2026 All Things Toasty Software Ltd
 //
 // Entry point for Bready – a Discord bot for Odoo integration, maintained by
 // All Things Toasty Software Ltd.
