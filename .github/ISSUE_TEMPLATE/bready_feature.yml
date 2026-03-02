@@ -1,0 +1,57 @@
+name: "Feature request — bready (Odoo bot)"
+description: Suggest a new command, Odoo integration, or bready-specific improvement
+title: "[Feature][bready] <short description>"
+labels: [enhancement, bready]
+body:
+     - type: textarea
+       id: problem-motivation
+       attributes:
+            label: Problem / motivation
+            description: "Describe the problem you face today. E.g. \"I have to leave Discord every time I want to check Odoo invoices.\""
+       validations:
+            required: true
+
+     - type: textarea
+       id: proposed-solution
+       attributes:
+            label: Proposed solution
+            description: >
+                 Describe what you want to happen. Include any new slash command names,
+                 parameters, or environment variables you envision. Reference the
+                 Commands Reference in the wiki if helpful.
+       validations:
+            required: true
+
+     - type: checkboxes
+       id: odoo-module
+       attributes:
+            label: "Odoo module / area"
+            options:
+                 - label: Projects / Tasks
+                 - label: To-dos
+                 - label: CRM
+                 - label: Knowledge
+                 - label: Account linking
+                 - label: Bridge / Discuss
+                 - label: Role-based access control
+                 - label: "New Odoo module integration: ___"
+                 - label: "Other: ___"
+
+     - type: input
+       id: odoo-version
+       attributes:
+            label: Odoo version compatibility
+            description: "Which Odoo version(s) does this apply to? (e.g. 16 / 17 / 18 / 19 / all)"
+            placeholder: e.g. 18 / all
+
+     - type: textarea
+       id: alternatives
+       attributes:
+            label: Alternatives considered
+            description: Any alternative approaches you have considered, and why this one is preferred.
+
+     - type: textarea
+       id: additional-context
+       attributes:
+            label: Additional context
+            description: Mockups, references, links to Odoo docs, or anything else.

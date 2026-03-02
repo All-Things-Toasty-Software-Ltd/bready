@@ -1,0 +1,61 @@
+name: Bug report
+description: Report a reproducible bug in bready or crumb
+title: "[Bug] <short description>"
+labels: [bug]
+body:
+     - type: textarea
+       id: describe-bug
+       attributes:
+            label: Describe the bug
+            description: A clear and concise description of what the bug is.
+       validations:
+            required: true
+
+     - type: textarea
+       id: steps-to-reproduce
+       attributes:
+            label: Steps to reproduce
+            value: |
+                 1. Run the bot with `./build/bready`.
+                 2. Invoke the slash command `/…`.
+                 3. See error.
+       validations:
+            required: true
+
+     - type: textarea
+       id: expected-behaviour
+       attributes:
+            label: Expected behaviour
+            description: What you expected to happen.
+       validations:
+            required: true
+
+     - type: textarea
+       id: actual-behaviour
+       attributes:
+            label: Actual behaviour
+            description: "What actually happened. Paste relevant log output below (redact any tokens, API keys, or other secrets before posting)."
+            placeholder: "<paste log output here>"
+       validations:
+            required: true
+
+     - type: textarea
+       id: environment
+       attributes:
+            label: Environment
+            value: |
+                 | Field | Value |
+                 |-------|-------|
+                 | OS | e.g. Ubuntu 24.04 |
+                 | Compiler | e.g. GCC 13.2 |
+                 | CMake version | e.g. 3.28 |
+                 | Bot binary | `bready` |
+                 | Odoo version (bready only) | e.g. 18.0 SaaS |
+       validations:
+            required: true
+
+     - type: textarea
+       id: additional-context
+       attributes:
+            label: Additional context
+            description: Screenshots, linked issues, or anything else that helps.

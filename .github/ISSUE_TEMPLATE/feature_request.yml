@@ -1,0 +1,32 @@
+name: Feature request
+description: Suggest a new command, integration, or improvement
+title: "[Feature] <short description>"
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Is your feature request related to a problem?
+      description: "A clear and concise description of the problem. E.g. \"I have to leave Discord every time I want to view Odoo invoices.\""
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Describe the solution you'd like
+      description: >
+        A clear and concise description of what you want to happen. Include any
+        new slash commands, parameters, or environment variables you envision.
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Describe alternatives you've considered
+      description: Any alternative solutions or features you've considered, and why this approach is preferred.
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional context
+      description: Add any other context, mockups, or references here.
