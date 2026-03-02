@@ -30,6 +30,12 @@ find_package(CURL REQUIRED)
 # Source files
 set(SOURCES
         src/main.cc
+        src/bready_bot.cc
+        src/bridge_db_store.cc
+        src/bridge_store.cc
+        src/odoo_client.cc
+        src/odoo_commands.cc
+        src/user_store.cc
 )
 
 add_executable(bready ${SOURCES})
