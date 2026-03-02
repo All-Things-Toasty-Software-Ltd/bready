@@ -1,0 +1,77 @@
+name: "Bug report — bready (Odoo bot)"
+description: Report a reproducible bug specific to the bready Odoo integration bot
+title: "[Bug][bready] <short description>"
+labels: [bug, bready]
+body:
+- type: textarea
+  id: describe-bug
+  attributes:
+  label: Describe the bug
+  description: A clear and concise description of what the bug is.
+  validations:
+  required: true
+
+- type: textarea
+  id: steps-to-reproduce
+  attributes:
+  label: Steps to reproduce
+  value: |
+  1. Start bready: `./build/bready`
+  2. Invoke `/…` with parameters: `…`
+  3. See error / unexpected behaviour.
+  validations:
+  required: true
+
+- type: textarea
+  id: expected-behaviour
+  attributes:
+  label: Expected behaviour
+  description: What you expected to happen.
+  validations:
+  required: true
+
+- type: textarea
+  id: actual-behaviour
+  attributes:
+  label: Actual behaviour
+  description: "What actually happened. Paste relevant log output below. ⚠️ Redact all tokens, API keys, passwords, and other secrets."
+  placeholder: "<paste log output here>"
+  validations:
+  required: true
+
+- type: checkboxes
+  id: odoo-module
+  attributes:
+  label: Which Odoo module is affected?
+  options:
+  - label: "Projects / Tasks (`/odoo_projects`, `/odoo_tasks`, `/odoo_task_new`)"
+  - label: "To-dos (`/odoo_todos`, `/odoo_todo_new`)"
+  - label: "CRM (`/odoo_crm`)"
+  - label: "Knowledge (`/odoo_notes`)"
+  - label: "Account linking (`/odoo_link`, `/odoo_unlink`, `/odoo_whoami`, …)"
+  - label: "Bridge (`/bridge_*`)"
+  - label: "Role gate (DISCORD_ADMIN_ROLE_ID / DISCORD_MEMBER_ROLE_ID)"
+  - label: Build / CMake
+  - label: "Other: ___"
+
+- type: textarea
+  id: environment
+  attributes:
+  label: Environment
+  value: |
+  | Field | Value |
+  |-------|-------|
+  | OS | e.g. Ubuntu 24.04 |
+  | Compiler | e.g. GCC 13 |
+  | CMake version | e.g. 3.28 |
+  | Odoo version | e.g. 18.0 SaaS |
+  | Odoo hosting | SaaS / Self-hosted |
+  | D++ version | e.g. v10.0.35 |
+  validations:
+  required: true
+
+- type: textarea
+  id: additional-context
+  attributes:
+  label: Additional context
+  description: Screenshots, linked issues, or anything else that helps.

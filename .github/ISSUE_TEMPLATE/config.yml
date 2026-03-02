@@ -3,11 +3,11 @@
 # contributors are guided to the right venue.
 #
 # Templates available:
-#   bug_report.md – generic bug report (either bot)
-#   bready_bug.md – bug specific to the bready Odoo integration bot
-#   feature_request.md – generic feature request (either bot)
-#   bready_feature.md – feature request for bready
-#   documentation.md – documentation improvement
+#   bug_report.yml – generic bug report (either bot)
+#   bready_bug.yml – bug specific to the bready Odoo integration bot
+#   feature_request.yml – generic feature request (either bot)
+#   bready_feature.yml – feature request for bready
+#   documentation.yml – documentation improvement
 
 blank_issues_enabled: false
 contact_links:
