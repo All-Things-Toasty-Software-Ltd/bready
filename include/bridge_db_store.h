@@ -18,41 +18,41 @@
 
 namespace bready {
 
-    // Manages a persistent list of Odoo bot credentials used by channel bridges.
-    // All public methods are safe to call from multiple threads concurrently.
-    class BridgeDbStore {
-    public:
-        // Constructs a BridgeDbStore backed by |file_path|.
-        // Loads existing data from the file if it exists.
-        explicit BridgeDbStore(const std::string& file_path);
+// Manages a persistent list of Odoo bot credentials used by channel bridges.
+// All public methods are safe to call from multiple threads concurrently.
+class BridgeDbStore {
+ public:
+  // Constructs a BridgeDbStore backed by |file_path|.
+  // Loads existing data from the file if it exists.
+  explicit BridgeDbStore(const std::string& file_path);
 
-        // Appends |config| and returns the new index.  Persists immediately.
-        int AddDb(const OdooConfig& config);
+  // Appends |config| and returns the new index.  Persists immediately.
+  int AddDb(const OdooConfig& config);
 
-        // Removes the entry at |index|.  No-op if out of range.  Persists
-        // immediately.
-        void RemoveDb(int index);
+  // Removes the entry at |index|.  No-op if out of range.  Persists
+  // immediately.
+  void RemoveDb(int index);
 
-        // Returns the OdooConfig at |index|, or nullopt if out of range.
-        std::optional<OdooConfig> GetDb(int index) const;
+  // Returns the OdooConfig at |index|, or nullopt if out of range.
+  std::optional<OdooConfig> GetDb(int index) const;
 
-        // Returns a snapshot of all entries.
-        std::vector<OdooConfig> GetAllDbs() const;
+  // Returns a snapshot of all entries.
+  std::vector<OdooConfig> GetAllDbs() const;
 
-        // Returns the number of registered databases.
-        int Size() const;
+  // Returns the number of registered databases.
+  int Size() const;
 
-    private:
-        // Loads entries from file_path_.  Called once from the constructor.
-        void Load();
+ private:
+  // Loads entries from file_path_.  Called once from the constructor.
+  void Load();
 
-        // Serialises dbs_ to file_path_.  Must be called with mutex_ held.
-        void Save() const;
+  // Serialises dbs_ to file_path_.  Must be called with mutex_ held.
+  void Save() const;
 
-        std::string file_path_;
-        std::vector<OdooConfig> dbs_;
-        mutable std::mutex mutex_;
-    };
+  std::string file_path_;
+  std::vector<OdooConfig> dbs_;
+  mutable std::mutex mutex_;
+};
 
 }  // namespace bready
 

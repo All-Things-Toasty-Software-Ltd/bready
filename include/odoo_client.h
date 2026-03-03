@@ -32,10 +32,11 @@ struct OdooRecord {
 // A message fetched from an Odoo Discuss channel.
 struct DiscussMessage {
   int id{0};
-  int author_id{0};               // res.partner ID of the author (0 if unknown).
-  std::string author;             // Display name of the Odoo user who wrote the message.
-  std::string body;               // Raw HTML body from Odoo.
-  std::vector<int> attachment_ids;  // IDs of ir.attachment records on this message.
+  int author_id{0};    // res.partner ID of the author (0 if unknown).
+  std::string author;  // Display name of the Odoo user who wrote the message.
+  std::string body;    // Raw HTML body from Odoo.
+  std::vector<int>
+      attachment_ids;  // IDs of ir.attachment records on this message.
 };
 
 // Metadata for a single Odoo attachment (ir.attachment record).
@@ -142,8 +143,8 @@ class OdooClient {
   int EnsureUid();
 
   OdooConfig config_;
-  int uid_{-1};          // Cached authenticated user ID (res.users.id).
-  int partner_id_{-1};   // Cached res.partner ID of the authenticated user.
+  int uid_{-1};         // Cached authenticated user ID (res.users.id).
+  int partner_id_{-1};  // Cached res.partner ID of the authenticated user.
   std::mutex auth_mutex_;
 };
 

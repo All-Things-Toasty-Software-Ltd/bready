@@ -437,8 +437,8 @@ std::vector<OdooRecord> OdooClient::GetDiscussChannels() {
 int OdooClient::FindDiscussChannel(const std::string& name) {
   if (EnsureUid() < 0) return -1;
 
-  nlohmann::json domain = nlohmann::json::array(
-      {nlohmann::json::array({"name", "ilike", name})});
+  nlohmann::json domain =
+      nlohmann::json::array({nlohmann::json::array({"name", "ilike", name})});
 
   nlohmann::json result =
       CallKw("discuss.channel", "search_read", nlohmann::json::array({domain}),
@@ -474,11 +474,11 @@ std::vector<DiscussMessage> OdooClient::GetNewDiscussMessages(int channel_id,
        nlohmann::json::array({"message_type", "=", "comment"}),
        nlohmann::json::array({"id", ">", after_id})});
 
-  nlohmann::json result = CallKw(
-      "mail.message", "search_read", nlohmann::json::array({domain}),
-      {{"fields", {"id", "body", "author_id", "attachment_ids"}},
-       {"limit", 50},
-       {"order", "id asc"}});
+  nlohmann::json result =
+      CallKw("mail.message", "search_read", nlohmann::json::array({domain}),
+             {{"fields", {"id", "body", "author_id", "attachment_ids"}},
+              {"limit", 50},
+              {"order", "id asc"}});
 
   std::vector<DiscussMessage> messages;
   if (!result.is_array()) return messages;
@@ -495,8 +495,7 @@ std::vector<DiscussMessage> OdooClient::GetNewDiscussMessages(int channel_id,
       msg.author = "Unknown";
     }
     // attachment_ids is a list of ir.attachment record IDs.
-    if (item.contains("attachment_ids") &&
-        item["attachment_ids"].is_array()) {
+    if (item.contains("attachment_ids") && item["attachment_ids"].is_array()) {
       for (const auto& att_id : item["attachment_ids"]) {
         if (att_id.is_number_integer()) {
           msg.attachment_ids.push_back(att_id.get<int>());
@@ -523,8 +522,7 @@ int OdooClient::GetPartnerUid() {
              {{"fields", nlohmann::json::array({"partner_id"})}});
 
   if (result.is_array() && !result.empty() &&
-      result[0].contains("partner_id") &&
-      result[0]["partner_id"].is_array() &&
+      result[0].contains("partner_id") && result[0]["partner_id"].is_array() &&
       // partner_id is a Many2one: [res.partner.id, "Display Name"]
       result[0]["partner_id"].size() >= 2) {
     int pid = result[0]["partner_id"][0].get<int>();

@@ -20,8 +20,8 @@
 //   export BOT_DATA_PATH="/path/to/user_links.json"
 //   # Optional: path for the bridge store (default: bridges.json)
 //   export BOT_BRIDGE_DATA_PATH="/path/to/bridges.json"
-//   # Optional: path for the bridge-database credential store (default: bridge_dbs.json)
-//   export BOT_BRIDGE_DB_DATA_PATH="/path/to/bridge_dbs.json"
+//   # Optional: path for the bridge-database credential store (default:
+//   bridge_dbs.json) export BOT_BRIDGE_DB_DATA_PATH="/path/to/bridge_dbs.json"
 //   ./bready
 
 #include <cstdlib>
@@ -65,7 +65,7 @@ int main() {
 
   // Helper lambda to parse a snowflake from an env var string.
   auto parse_snowflake = [](const char* env_val,
-                             const char* var_name) -> dpp::snowflake {
+                            const char* var_name) -> dpp::snowflake {
     if (env_val == nullptr || env_val[0] == '\0') return dpp::snowflake{0};
     try {
       return dpp::snowflake(std::stoull(env_val));
@@ -78,12 +78,10 @@ int main() {
   };
 
   // Role IDs that control bot access.
-  dpp::snowflake admin_role_id =
-      parse_snowflake(std::getenv("DISCORD_ADMIN_ROLE_ID"),
-                      "DISCORD_ADMIN_ROLE_ID");
-  dpp::snowflake member_role_id =
-      parse_snowflake(std::getenv("DISCORD_MEMBER_ROLE_ID"),
-                      "DISCORD_MEMBER_ROLE_ID");
+  dpp::snowflake admin_role_id = parse_snowflake(
+      std::getenv("DISCORD_ADMIN_ROLE_ID"), "DISCORD_ADMIN_ROLE_ID");
+  dpp::snowflake member_role_id = parse_snowflake(
+      std::getenv("DISCORD_MEMBER_ROLE_ID"), "DISCORD_MEMBER_ROLE_ID");
 
   bready::BreadyBot bot(token_env, odoo_cfg, user_store_path, bridge_store_path,
                         bridge_db_store_path, admin_role_id, member_role_id);

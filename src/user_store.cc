@@ -88,13 +88,12 @@ std::optional<OdooConfig> UserStore::GetUserConfig(
   return it->second.configs[static_cast<std::size_t>(idx)];
 }
 
-std::optional<OdooConfig> UserStore::GetUserConfigAt(
-    dpp::snowflake discord_id, int db_index) const {
+std::optional<OdooConfig> UserStore::GetUserConfigAt(dpp::snowflake discord_id,
+                                                     int db_index) const {
   std::lock_guard<std::mutex> lock(mutex_);
   auto it = links_.find(std::to_string(discord_id));
   if (it == links_.end()) return std::nullopt;
-  if (db_index < 0 ||
-      db_index >= static_cast<int>(it->second.configs.size()))
+  if (db_index < 0 || db_index >= static_cast<int>(it->second.configs.size()))
     return std::nullopt;
   return it->second.configs[static_cast<std::size_t>(db_index)];
 }
@@ -148,8 +147,7 @@ void UserStore::SetPrimaryDb(dpp::snowflake discord_id, int db_index) {
   std::lock_guard<std::mutex> lock(mutex_);
   auto it = links_.find(std::to_string(discord_id));
   if (it == links_.end()) return;
-  if (db_index < 0 ||
-      db_index >= static_cast<int>(it->second.configs.size()))
+  if (db_index < 0 || db_index >= static_cast<int>(it->second.configs.size()))
     return;
   it->second.primary_index = db_index;
   Save();

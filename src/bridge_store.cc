@@ -11,8 +11,7 @@
 
 namespace bready {
 
-BridgeStore::BridgeStore(const std::string& file_path)
-    : file_path_(file_path) {
+BridgeStore::BridgeStore(const std::string& file_path) : file_path_(file_path) {
   Load();
 }
 
@@ -60,7 +59,7 @@ void BridgeStore::Save() const {
 }
 
 void BridgeStore::AddBridge(dpp::snowflake discord_channel_id,
-                             int odoo_channel_id, int bridge_db_id) {
+                            int odoo_channel_id, int bridge_db_id) {
   std::lock_guard<std::mutex> lock(mutex_);
   // Replace existing bridge for this Discord channel if present.
   for (auto& entry : bridges_) {
@@ -83,12 +82,12 @@ void BridgeStore::AddBridge(dpp::snowflake discord_channel_id,
 
 void BridgeStore::RemoveBridge(dpp::snowflake discord_channel_id) {
   std::lock_guard<std::mutex> lock(mutex_);
-  bridges_.erase(
-      std::remove_if(bridges_.begin(), bridges_.end(),
-                     [discord_channel_id](const BridgeEntry& e) {
-                       return e.discord_channel_id == discord_channel_id;
-                     }),
-      bridges_.end());
+  bridges_.erase(std::remove_if(bridges_.begin(), bridges_.end(),
+                                [discord_channel_id](const BridgeEntry& e) {
+                                  return e.discord_channel_id ==
+                                         discord_channel_id;
+                                }),
+                 bridges_.end());
   Save();
 }
 

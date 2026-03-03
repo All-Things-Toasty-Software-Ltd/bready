@@ -19,8 +19,8 @@ namespace bready {
 // a linked Odoo account.
 struct UserContext {
   dpp::snowflake discord_id;
-  bool is_linked;   // true when the user has at least one personal Odoo account
-                    // linked.
+  bool is_linked;  // true when the user has at least one personal Odoo account
+                   // linked.
   int db_index{-1};  // -1 = use primary; >= 0 = specific DB index.
 };
 

@@ -154,15 +154,14 @@ void HandleOdooLinkCommand(const dpp::slashcommand_t& event,
   embed.set_title("🔗 Odoo Account Linked")
       .set_color(kOdooColor)
       .set_description(
-          is_first
-              ? "Your Discord account has been linked to your Odoo "
-                "account.  All Odoo commands will now use your "
-                "personal credentials."
-              : "A new Odoo instance has been added (index **" +
-                    std::to_string(new_idx) +
-                    "**).  Use **/odoo_db_set_primary** to make it the "
-                    "default, or pass `db_id:" + std::to_string(new_idx) +
-                    "` on any data command.")
+          is_first ? "Your Discord account has been linked to your Odoo "
+                     "account.  All Odoo commands will now use your "
+                     "personal credentials."
+                   : "A new Odoo instance has been added (index **" +
+                         std::to_string(new_idx) +
+                         "**).  Use **/odoo_db_set_primary** to make it the "
+                         "default, or pass `db_id:" +
+                         std::to_string(new_idx) + "` on any data command.")
       .add_field("Odoo URL", url, false)
       .add_field("Database", database, true)
       .add_field("Username", username, true)
@@ -563,8 +562,9 @@ void HandleBridgeDbAddCommand(const dpp::slashcommand_t& event,
   dpp::embed embed;
   embed.set_title("🗄️ Bridge Database Registered")
       .set_color(kOdooColor)
-      .set_description("The Odoo database has been registered and can now be "
-                       "used when creating channel bridges.")
+      .set_description(
+          "The Odoo database has been registered and can now be "
+          "used when creating channel bridges.")
       .add_field("Bridge DB ID", std::to_string(new_id), true)
       .add_field("Odoo URL", url, false)
       .add_field("Database", database, true)
@@ -590,8 +590,8 @@ void HandleBridgeDbListCommand(const dpp::slashcommand_t& event,
   std::ostringstream desc;
   for (int i = 0; i < static_cast<int>(dbs.size()); ++i) {
     const auto& cfg = dbs[static_cast<std::size_t>(i)];
-    desc << "**[" << i << "]** " << cfg.url << " — `" << cfg.database
-         << "` (" << cfg.username << ")\n";
+    desc << "**[" << i << "]** " << cfg.url << " — `" << cfg.database << "` ("
+         << cfg.username << ")\n";
   }
 
   dpp::embed embed;
@@ -623,10 +623,9 @@ void HandleBridgeDbRemoveCommand(const dpp::slashcommand_t& event,
     return;
   }
   bridge_db_store.RemoveDb(index);
-  event.reply(
-      dpp::message("✅ Bridge database **" + std::to_string(index) +
-                   "** has been removed.")
-          .set_flags(dpp::m_ephemeral));
+  event.reply(dpp::message("✅ Bridge database **" + std::to_string(index) +
+                           "** has been removed.")
+                  .set_flags(dpp::m_ephemeral));
 }
 
 void HandleBridgeCreateCommand(const dpp::slashcommand_t& event,
@@ -661,8 +660,8 @@ void HandleBridgeCreateCommand(const dpp::slashcommand_t& event,
   // Resolve which OdooClient to use for channel lookup.
   int bridge_db_id = -1;
   if (std::holds_alternative<int64_t>(event.get_parameter("bridge_db_id"))) {
-    bridge_db_id =
-        static_cast<int>(std::get<int64_t>(event.get_parameter("bridge_db_id")));
+    bridge_db_id = static_cast<int>(
+        std::get<int64_t>(event.get_parameter("bridge_db_id")));
   }
 
   std::optional<OdooClient> db_client;
@@ -685,27 +684,26 @@ void HandleBridgeCreateCommand(const dpp::slashcommand_t& event,
   if (odoo_channel_id < 0) {
     event.reply(
         dpp::message("❌ Could not find an Odoo Discuss channel named **" +
-                     odoo_channel_name +
-                     "**.  Check the name and try again.")
+                     odoo_channel_name + "**.  Check the name and try again.")
             .set_flags(dpp::m_ephemeral));
     return;
   }
 
   bridge_store.AddBridge(discord_channel_id, odoo_channel_id, bridge_db_id);
 
-  std::string db_label = bridge_db_id >= 0
-                             ? "bridge database **" + std::to_string(bridge_db_id) + "**"
-                             : "the shared bot Odoo account";
+  std::string db_label =
+      bridge_db_id >= 0
+          ? "bridge database **" + std::to_string(bridge_db_id) + "**"
+          : "the shared bot Odoo account";
 
   dpp::embed embed;
   embed.set_title("🌉 Bridge Created")
       .set_color(kOdooColor)
-      .set_description("Messages in <#" +
-                       std::to_string(discord_channel_id) +
+      .set_description("Messages in <#" + std::to_string(discord_channel_id) +
                        "> will now be bridged to the Odoo Discuss channel **" +
-                       odoo_channel_name + "** (ID: " +
-                       std::to_string(odoo_channel_id) + ") using " +
-                       db_label + ".")
+                       odoo_channel_name +
+                       "** (ID: " + std::to_string(odoo_channel_id) +
+                       ") using " + db_label + ".")
       .set_footer(dpp::embed_footer().set_text(
           "Use /bridge_delete to remove this bridge."));
   event.reply(dpp::message().add_embed(embed).set_flags(dpp::m_ephemeral));

@@ -27,11 +27,21 @@ std::string HtmlEscape(const std::string& text) {
   result.reserve(text.size());
   for (char c : text) {
     switch (c) {
-      case '&': result += "&amp;"; break;
-      case '<': result += "&lt;";  break;
-      case '>': result += "&gt;";  break;
-      case '"': result += "&quot;"; break;
-      default:  result += c;       break;
+      case '&':
+        result += "&amp;";
+        break;
+      case '<':
+        result += "&lt;";
+        break;
+      case '>':
+        result += "&gt;";
+        break;
+      case '"':
+        result += "&quot;";
+        break;
+      default:
+        result += c;
+        break;
     }
   }
   return result;
@@ -76,8 +86,7 @@ std::string StripHtml(const std::string& html) {
     }
 
     // <br> / <br/> / <br …> → newline.
-    if (!tag.empty() && tag[0] == 'b' &&
-        tag.size() >= 2 && tag[1] == 'r' &&
+    if (!tag.empty() && tag[0] == 'b' && tag.size() >= 2 && tag[1] == 'r' &&
         (tag.size() == 2 || tag[2] == '/' || tag[2] == ' ')) {
       result += '\n';
       continue;
@@ -101,9 +110,9 @@ std::string StripHtml(const std::string& html) {
       continue;
     }
 
-    // <a href="…"> → save href; it will be appended after the link text at </a>.
-    if (!tag.empty() && tag[0] == 'a' &&
-        (tag.size() == 1 || tag[1] == ' ')) {
+    // <a href="…"> → save href; it will be appended after the link text at
+    // </a>.
+    if (!tag.empty() && tag[0] == 'a' && (tag.size() == 1 || tag[1] == ' ')) {
       const auto href_pos = tag.find("href=\"");
       if (href_pos != std::string::npos) {
         const size_t url_start = href_pos + 6;
@@ -126,12 +135,24 @@ std::string StripHtml(const std::string& html) {
       decoded += result[j];
       continue;
     }
-    if      (result.compare(j, 5, "&amp;")  == 0) { decoded += '&';  j += 4U; }
-    else if (result.compare(j, 4, "&lt;")   == 0) { decoded += '<';  j += 3U; }
-    else if (result.compare(j, 4, "&gt;")   == 0) { decoded += '>';  j += 3U; }
-    else if (result.compare(j, 6, "&quot;") == 0) { decoded += '"';  j += 5U; }
-    else if (result.compare(j, 6, "&nbsp;") == 0) { decoded += ' ';  j += 5U; }
-    else                                           { decoded += result[j]; }
+    if (result.compare(j, 5, "&amp;") == 0) {
+      decoded += '&';
+      j += 4U;
+    } else if (result.compare(j, 4, "&lt;") == 0) {
+      decoded += '<';
+      j += 3U;
+    } else if (result.compare(j, 4, "&gt;") == 0) {
+      decoded += '>';
+      j += 3U;
+    } else if (result.compare(j, 6, "&quot;") == 0) {
+      decoded += '"';
+      j += 5U;
+    } else if (result.compare(j, 6, "&nbsp;") == 0) {
+      decoded += ' ';
+      j += 5U;
+    } else {
+      decoded += result[j];
+    }
   }
 
   // Collapse leading/trailing whitespace.
@@ -164,9 +185,8 @@ BreadyBot::BreadyBot(const std::string& token, const OdooConfig& odoo_config,
                      const std::string& bridge_db_store_path,
                      dpp::snowflake admin_role_id,
                      dpp::snowflake member_role_id)
-    : bot_(token,
-           dpp::i_default_intents | dpp::i_guild_members |
-               dpp::i_message_content),
+    : bot_(token, dpp::i_default_intents | dpp::i_guild_members |
+                      dpp::i_message_content),
       odoo_client_(odoo_config),
       user_store_(user_store_path),
       bridge_store_(bridge_store_path),
@@ -200,9 +220,8 @@ void BreadyBot::Run() {
   bot_.on_slashcommand(
       [this](const dpp::slashcommand_t& event) { OnSlashCommand(event); });
 
-  bot_.on_message_create([this](const dpp::message_create_t& event) {
-    OnMessageCreate(event);
-  });
+  bot_.on_message_create(
+      [this](const dpp::message_create_t& event) { OnMessageCreate(event); });
 
   // Start the Odoo-polling thread before blocking on the gateway.
   running_ = true;
@@ -248,9 +267,8 @@ bool BreadyBot::RequireMemberAccess(const dpp::slashcommand_t& event) const {
 
 bool BreadyBot::RequireAdminAccess(const dpp::slashcommand_t& event) const {
   if (GetAccessLevel(event) == AccessLevel::kAdmin) return true;
-  event.reply(
-      dpp::message("🚫 This command requires the **Admin** role.")
-          .set_flags(dpp::m_ephemeral));
+  event.reply(dpp::message("🚫 This command requires the **Admin** role.")
+                  .set_flags(dpp::m_ephemeral));
   return false;
 }
 
@@ -291,8 +309,8 @@ void BreadyBot::RegisterCommands() {
       "odoo_unlink", "Remove all your linked Odoo accounts.", bot_.me.id);
 
   dpp::slashcommand odoo_db_list_cmd(
-      "odoo_db_list",
-      "List all your linked Odoo instances with their indices.", bot_.me.id);
+      "odoo_db_list", "List all your linked Odoo instances with their indices.",
+      bot_.me.id);
 
   dpp::slashcommand odoo_db_remove_cmd(
       "odoo_db_remove", "Remove a specific linked Odoo instance.", bot_.me.id);
@@ -386,16 +404,16 @@ void BreadyBot::RegisterCommands() {
   bridge_db_add_cmd.add_option(dpp::command_option(
       dpp::co_string, "username", "Bot Odoo login e-mail.", true));
   bridge_db_add_cmd.add_option(dpp::command_option(
-      dpp::co_string, "api_key",
-      "Bot Odoo API key (from Settings → API Keys).", true));
+      dpp::co_string, "api_key", "Bot Odoo API key (from Settings → API Keys).",
+      true));
 
   dpp::slashcommand bridge_db_list_cmd(
-      "bridge_db_list",
-      "Admin: list all registered bridge Odoo databases.", bot_.me.id);
+      "bridge_db_list", "Admin: list all registered bridge Odoo databases.",
+      bot_.me.id);
 
   dpp::slashcommand bridge_db_remove_cmd(
-      "bridge_db_remove",
-      "Admin: remove a registered bridge Odoo database.", bot_.me.id);
+      "bridge_db_remove", "Admin: remove a registered bridge Odoo database.",
+      bot_.me.id);
   bridge_db_remove_cmd.add_option(dpp::command_option(
       dpp::co_integer, "bridge_db_id",
       "Index of the bridge database to remove (see /bridge_db_list).", true));
@@ -404,9 +422,9 @@ void BreadyBot::RegisterCommands() {
       "bridge_create",
       "Admin: bridge a Discord channel to an Odoo Discuss channel.",
       bot_.me.id);
-  bridge_create_cmd.add_option(dpp::command_option(
-      dpp::co_channel, "discord_channel",
-      "The Discord channel to bridge.", true));
+  bridge_create_cmd.add_option(
+      dpp::command_option(dpp::co_channel, "discord_channel",
+                          "The Discord channel to bridge.", true));
   bridge_create_cmd.add_option(dpp::command_option(
       dpp::co_string, "odoo_channel",
       "Name of the Odoo Discuss channel to bridge to.", true));
@@ -417,8 +435,8 @@ void BreadyBot::RegisterCommands() {
       false));
 
   dpp::slashcommand bridge_delete_cmd(
-      "bridge_delete",
-      "Admin: remove a Discord↔Odoo Discuss channel bridge.", bot_.me.id);
+      "bridge_delete", "Admin: remove a Discord↔Odoo Discuss channel bridge.",
+      bot_.me.id);
   bridge_delete_cmd.add_option(dpp::command_option(
       dpp::co_channel, "discord_channel",
       "The Discord channel whose bridge should be removed.", true));
@@ -431,14 +449,13 @@ void BreadyBot::RegisterCommands() {
 
   // Register all commands globally.
   bot_.global_bulk_command_create(
-      {odoo_link_cmd,       odoo_unlink_cmd,     odoo_db_list_cmd,
-       odoo_db_remove_cmd,  odoo_db_set_primary_cmd,
-       odoo_link_user_cmd,  odoo_whoami_cmd,     odoo_projects_cmd,
-       odoo_tasks_cmd,      odoo_task_new_cmd,   odoo_todos_cmd,
-       odoo_todo_new_cmd,   odoo_crm_cmd,        odoo_notes_cmd,
-       bridge_db_add_cmd,   bridge_db_list_cmd,  bridge_db_remove_cmd,
-       bridge_create_cmd,   bridge_delete_cmd,   bridge_list_cmd,
-       help_cmd},
+      {odoo_link_cmd,      odoo_unlink_cmd,         odoo_db_list_cmd,
+       odoo_db_remove_cmd, odoo_db_set_primary_cmd, odoo_link_user_cmd,
+       odoo_whoami_cmd,    odoo_projects_cmd,       odoo_tasks_cmd,
+       odoo_task_new_cmd,  odoo_todos_cmd,          odoo_todo_new_cmd,
+       odoo_crm_cmd,       odoo_notes_cmd,          bridge_db_add_cmd,
+       bridge_db_list_cmd, bridge_db_remove_cmd,    bridge_create_cmd,
+       bridge_delete_cmd,  bridge_list_cmd,         help_cmd},
       [](const dpp::confirmation_callback_t& cb) {
         if (cb.is_error()) {
           std::cerr << "Error registering slash commands: "
@@ -467,10 +484,10 @@ void BreadyBot::OnSlashCommand(const dpp::slashcommand_t& event) {
                    false)
         .add_field("/odoo_link <url> <database> <username> <api_key>",
                    "Add a new linked Odoo instance.", false)
-        .add_field("/odoo_unlink",
-                   "Remove all your linked Odoo accounts.", false)
-        .add_field("/odoo_db_list",
-                   "List all your linked Odoo instances.", false)
+        .add_field("/odoo_unlink", "Remove all your linked Odoo accounts.",
+                   false)
+        .add_field("/odoo_db_list", "List all your linked Odoo instances.",
+                   false)
         .add_field("/odoo_db_remove <db_id>",
                    "Remove a specific linked Odoo instance.", false)
         .add_field("/odoo_db_set_primary <db_id>",
@@ -481,30 +498,29 @@ void BreadyBot::OnSlashCommand(const dpp::slashcommand_t& event) {
             "account.",
             false)
         .add_field("━━ Data ━━", "\u200b", false)
-        .add_field("/odoo_projects [db_id]",
-                   "List Odoo projects (up to 25).", false)
+        .add_field("/odoo_projects [db_id]", "List Odoo projects (up to 25).",
+                   false)
         .add_field("/odoo_tasks [project] [db_id]",
                    "List tasks, optionally filtered by project.", false)
         .add_field("/odoo_task_new <title> [project] [description] [db_id]",
                    "Create a new Odoo task.", false)
         .add_field("/odoo_todos [db_id]", "List personal to-dos.", false)
-        .add_field("/odoo_todo_new <title> [db_id]",
-                   "Create a personal to-do.", false)
-        .add_field("/odoo_crm [db_id]",
-                   "List CRM leads and opportunities.", false)
+        .add_field("/odoo_todo_new <title> [db_id]", "Create a personal to-do.",
+                   false)
+        .add_field("/odoo_crm [db_id]", "List CRM leads and opportunities.",
+                   false)
         .add_field("/odoo_notes [db_id]", "List Knowledge articles.", false)
         .add_field("━━ Bridges (Admin) ━━", "\u200b", false)
         .add_field("/bridge_db_add <url> <database> <username> <api_key>",
-                   "Register bot Odoo credentials for channel bridges.",
-                   false)
+                   "Register bot Odoo credentials for channel bridges.", false)
         .add_field("/bridge_db_list",
                    "List all registered bridge Odoo databases.", false)
         .add_field("/bridge_db_remove <bridge_db_id>",
                    "Remove a registered bridge Odoo database.", false)
-        .add_field("/bridge_create <discord_channel> <odoo_channel>"
-                   " [bridge_db_id]",
-                   "Bridge a Discord channel to an Odoo Discuss channel.",
-                   false)
+        .add_field(
+            "/bridge_create <discord_channel> <odoo_channel>"
+            " [bridge_db_id]",
+            "Bridge a Discord channel to an Odoo Discuss channel.", false)
         .add_field("/bridge_delete <discord_channel>",
                    "Remove a Discord↔Odoo bridge.", false)
         .add_field("/bridge_list", "List all active bridges.", false)
@@ -693,8 +709,8 @@ void BreadyBot::OnMessageCreate(const dpp::message_create_t& event) {
                                        : event.msg.author.username;
         std::string body;
         if (!event.msg.content.empty()) {
-          body = "<p><strong>" + HtmlEscape(author) + "</strong>: " +
-                 HtmlEscape(event.msg.content) + "</p>";
+          body = "<p><strong>" + HtmlEscape(author) +
+                 "</strong>: " + HtmlEscape(event.msg.content) + "</p>";
         } else {
           body = "<p><strong>" + HtmlEscape(author) + "</strong> shared:</p>";
         }
@@ -762,9 +778,9 @@ void BreadyBot::PollOdooChannels() {
         const std::string plain = StripHtml(msg.body);
         if (plain.empty() && msg.attachment_ids.empty()) continue;
 
-        std::string discord_msg =
-            plain.empty() ? ("**" + msg.author + "** shared:")
-                          : ("**" + msg.author + "**: " + plain);
+        std::string discord_msg = plain.empty()
+                                      ? ("**" + msg.author + "** shared:")
+                                      : ("**" + msg.author + "**: " + plain);
 
         // Append links for any files attached directly to the Odoo message.
         if (!msg.attachment_ids.empty()) {
