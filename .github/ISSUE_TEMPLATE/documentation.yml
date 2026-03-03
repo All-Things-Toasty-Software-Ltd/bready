@@ -19,7 +19,14 @@ body:
                  - label: "`wiki/Changelog.md`"
                  - label: "`ROADMAP.md`"
                  - label: Code comments / doc comments in source files
-                 - label: "Other: ___"
+                 - label: "Other: (Specify below)"
+
+     - type: input
+       id: other-doc
+       attributes:
+         label: Other document (if selected above)
+         description: Specify the document if you selected "Other" above
+         placeholder: "e.g., wiki/MyCustomPage.md"
 
      - type: textarea
        id: what-is-wrong
