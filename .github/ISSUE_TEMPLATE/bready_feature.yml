@@ -34,8 +34,15 @@ body:
                  - label: Account linking
                  - label: Bridge / Discuss
                  - label: Role-based access control
-                 - label: "New Odoo module integration: ___"
-                 - label: "Other: ___"
+                 - label: "New Odoo module integration: (Specify below)"
+                 - label: "Other: (Specify below)"
+
+     - type: input
+       id: other-module
+       attributes:
+         label: Other module (if selected above)
+         description: Specify the module if you selected "Other" above
+         placeholder: "e.g., Point of Sale"
 
      - type: input
        id: odoo-version
