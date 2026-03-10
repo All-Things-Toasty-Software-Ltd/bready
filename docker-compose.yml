@@ -1,0 +1,37 @@
+# Copyright 2026 All Things Toasty Software Ltd
+#
+# Run the bready Odoo integration bot as a Docker / Podman container.
+#
+# Quick start
+#   1. Copy and fill in the env file:
+#        cp .env.example .env  && $EDITOR .env
+#
+#   2. Create the host data directory (bready persists JSON files here):
+#        mkdir -p data
+#
+#   3. Start the bot:
+#        docker compose up -d
+#        # or: podman compose up -d
+#
+# Updating after code changes
+#   Rebuild and restart the container:
+#        docker compose build && docker compose up -d
+#
+# Accessing bready data files
+#   The three JSON stores (user_links.json, bridges.json, bridge_dbs.json) are
+#   written to ./data/ on the host so the admin can inspect or back them up
+#   directly.
+
+services:
+
+  # bready: Odoo integration bot
+  bready:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file: .env
+    volumes:
+      # Bind-mount the host directory so all three data files are directly
+      # accessible to the admin without needing to enter the container.
+      - ./data:/data
+    restart: unless-stopped
