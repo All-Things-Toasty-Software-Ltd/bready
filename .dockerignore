@@ -1,0 +1,15 @@
+# Exclude build artifacts and local configuration from the Docker image.
+
+# CMake build directory
+build/
+
+# IDE project files
+.idea/
+
+# Local environment file (contains secrets — never bake into the image)
+.env
+
+# Runtime data files (these live on the host volume, not in the image)
+user_links.json
+bridges.json
+bridge_dbs.json
