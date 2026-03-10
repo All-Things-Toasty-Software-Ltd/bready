@@ -13,6 +13,11 @@ FetchContent_Declare(
         GIT_TAG        v10.1.4
         GIT_SHALLOW    TRUE
 )
+
+set(DPP_BUILD_TEST OFF)
+set(DPP_NO_CORO ON)
+set(BUILD_VOICE_SUPPORT OFF)
+
 FetchContent_MakeAvailable(dpp)
 
 # Fetch nlohmann/json

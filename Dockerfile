@@ -20,6 +20,9 @@ RUN apt-get update -qq && \
     libssl-dev \
     zlib1g-dev \
     libopus-dev \
+    libsodium-dev \
+    libfmt-dev \
+    libzstd-dev \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /src
